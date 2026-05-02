@@ -29,9 +29,6 @@ use core_availability\capability_checker;
  * Condition to restrict access by user
  */
 class condition extends \core_availability\condition {
-    /** @var int ID of the required user */
-    protected int $userid;
-
     /** @var array $userids The user ids that the condition checks for */
     protected array $userids;
 
@@ -142,6 +139,6 @@ class condition extends \core_availability\condition {
      * @return string Id of requested user
      */
     protected function get_debug_string() {
-        return $this->userid;
+        return implode(',', $this->userids);
     }
 }
