@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace availability_user;
+
 /**
  * Test for restriction by user
  *
@@ -22,25 +24,43 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use availability_user\condition;
-
 /**
  * Testcase for availability_user
  */
-class availability_user_condition_testcase extends advanced_testcase {
+class availability_user_condition_testcase extends \advanced_testcase {
+    /** @var \core_availability\mock_info */
+    protected \core_availability\mock_info $info;
+    /** @var \core_availability\capability_checker */
+    protected \core_availability\capability_checker $capabilitychecker;
+    /** @var condition A condition using the old structure (single userid) */
+    protected condition $cond;
+    /** @var condition A condition using the new structure (multiple userids) */
+    protected condition $newcond;
+    /** @var condition A condition using multiple userids */
+    protected condition $multiplecond;
+    /** @var \stdClass */
+    protected \stdClass $user1;
+    /** @var \stdClass */
+    protected \stdClass $user2;
+    /** @var \stdClass */
+    protected \stdClass $user3;
+    /** @var \stdClass */
+    protected \stdClass $user4;
+
     /**
      * Load necessary libs
      */
     public static function setUpBeforeClass(): void {
         global $CFG;
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
+        parent::setUpBeforeClass();
     }
 
     /**
      * Prepare testing
      */
     public function setUp(): void {
-        global $DB, $CFG;
+        parent::setUp();    
         $this->setAdminUser();
         $this->info = new \core_availability\mock_info();
         $this->capabilitychecker = new \core_availability\capability_checker($this->info->get_context());
@@ -65,15 +85,15 @@ class availability_user_condition_testcase extends advanced_testcase {
             'email' => 'user4@example.com',
             'username' => 'user4', ]
         );
-        $oldstructure = new stdClass();
+        $oldstructure = new \stdClass();
         $oldstructure->userid = $this->user1->id;
         $this->cond = new condition($oldstructure);
 
-        $newstructure = new stdClass();
+        $newstructure = new \stdClass();
         $newstructure->userids = [$this->user1->id];
         $this->newcond = new condition($newstructure);
 
-        $multiplestructure = new stdClass();
+        $multiplestructure = new \stdClass();
         $multiplestructure->userids = [$this->user1->id, $this->user2->id, $this->user3->id];
         $this->multiplecond = new condition($multiplestructure);
     }
