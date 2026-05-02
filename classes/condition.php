@@ -107,7 +107,7 @@ class condition extends \core_availability\condition {
      * @return string Information string (for admin) about all restrictions on this item
      */
     public function get_description($full, $not, \core_availability\info $info) {
-        if ($full) {
+        if ($full && count($this->userids) > 0) {
             if (count($this->userids) > 1) {
                 $usernames = [];
                 foreach ($this->userids as $userid) {
@@ -120,7 +120,7 @@ class condition extends \core_availability\condition {
                 }
                 return get_string('requires_' . ($not ? 'not_' : '') . 'users', 'availability_user', implode(', ', $usernames));
             } else {
-                $user = \core_user::get_user($this->userids[0]);
+                $user = \core_user::get_user(array_shift($this->userids));
                 if (!$user) {
                     $fullname = get_string('unknown_user', 'availability_user');
                 } else {
