@@ -60,7 +60,7 @@ class availability_user_condition_testcase extends \advanced_testcase {
      * Prepare testing
      */
     public function setUp(): void {
-        parent::setUp();    
+        parent::setUp();
         $this->setAdminUser();
         $this->info = new \core_availability\mock_info();
         $this->capabilitychecker = new \core_availability\capability_checker($this->info->get_context());
